@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta charset="UTF-8" />
+  <link rel="icon" href="img/logo3.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drive Deal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="navbar">
+<div class="logo">
+    <a href="index.html">
+        <img src="img/logo2.png" alt="Drive Deal Logo">
+    </a>
+</div>
+  </header>
+
+  <!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+
+    <h1>Catalogue des occasions</h1>
+
+    <p>
+        Découvrez notre sélection de véhicules d'occasion de qualité,
+        rigoureusement sélectionnés pour vous offrir le meilleur rapport qualité-prix.
+    </p>
+
+    <!-- COMPTEUR JUSTE EN DESSOUS DU TEXTE -->
+    <div class="stat-box">
+        <h2 id="car-count">0</h2>
+        <span>OCCASIONS</span>
+    </div>
+</div>
+
+  </section>
+
+    <div id="cars-container"></div>
+
+<script>
+
+const url = "https://drive-deal-api.scale35ytb.workers.dev/" + Date.now();
+
+fetch(url)
+.then(res => res.json())
+.then(data => {
+
+    const container =
+    document.getElementById("cars-container");
+
+    let totalCars = 0;
+
+    data.forEach(voiture => {
+
+        totalCars++;
+
+        container.innerHTML += `
+
+        <div class="car-card">
+
+            <div class="car-image">
+
+                <img src="${voiture["Lien Image"]}" alt="voiture">
+
+            </div>
+
+            ${voiture["Perf"] === "Full" ? `
+
+            <div class="perf-badge">
+                <i class="fas fa-star"></i>FULL PERF
+            </div>
+
+            ` : ""}
+
+            <div class="car-info">
+
+                <div class="car-title">
+
+                    <h3>${voiture["Véhicule"]}</h3>
+
+                </div>
+
+                <div class="car-specs">
+
+                    <div class="spec">
+                        <i class="fas fa-box"></i>
+                        ${voiture["Coffre"] || 0} KG
+                    </div>
+
+                    <div class="spec">
+                        <i class="fas fa-users"></i>
+                        ${voiture["Places"] || 0} places
+                    </div>
+
+                    <div class="spec">
+                        <i class="fas fa-road"></i>
+                        ${voiture["Km"] || 0} KM
+                    </div>
+
+                </div>
+
+                <div class="car-price">
+
+                    <span class="old-price">
+                        ${voiture["Prix concess"]} $
+                    </span>
+
+                    <span class="new-price">
+                        ${voiture["Prix vente"]} $
+                    </span>
+
+                </div>
+
+                <div class="car-actions">
+
+                    <button class="reserve-btn">
+                        Réserver
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+        `;
+    });
+
+    document.getElementById("car-count")
+    .innerText = totalCars;
+
+});
+
+</script>
+
+<script>
+
+const observer = new MutationObserver(() => {
+
+    const images =
+    document.querySelectorAll(".car-card img");
+
+    images.forEach(img => {
+
+        if(img.dataset.loaded) return;
+
+        img.dataset.loaded = true;
+
+        img.onload = () => {
+
+            const container =
+            img.parentElement;
+
+            const containerWidth =
+            container.offsetWidth;
+
+            const naturalWidth =
+            img.naturalWidth;
+
+            // calcule taille parfaite avec 2px marge
+            const targetWidth =
+            containerWidth - 4;
+
+            const scale =
+            targetWidth / naturalWidth;
+
+            img.style.width =
+            (naturalWidth * scale) + "px";
+
+            img.style.height = "auto";
+
+            img.style.display = "block";
+
+            img.style.marginLeft = "2px";
+            img.style.marginRight = "2px";
+
+            img.style.objectFit = "contain";
+
+        };
+
+    });
+
+});
+
+observer.observe(document.body,{
+    childList:true,
+    subtree:true
+});
+
+</script>
+
+</body>
+<footer class="footer">
+
+    <p>
+        © 2025 Drive Deal — Tous droits réservés.
+    </p>
+
+</footer>
+</html>
