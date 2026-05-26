@@ -20,13 +20,25 @@ body{
    NAVBAR
 ========================= */
 
-.navbar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-    background: #000;
+.navbar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:130px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,0.72);
+
+    backdrop-filter:blur(10px);
+
+    z-index:999;
 }
 
 /* =========================
@@ -43,10 +55,8 @@ body{
     transform:translateX(-50%);
 }
 
-.logo img {
-    width: 180px;   /* taille du logo */
-    height: auto;
-    display: block;
+.logo img{
+    width:270px;
 }
 
 /* =========================
